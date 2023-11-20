@@ -64,7 +64,14 @@ app.get('/reviews', async(req,res)=>{
   res.send(result);
 })
 
-
+//for creating cart collection (part -4 third video)
+const cartCollection=client.db('bistroDb').collection('carts');
+//to insert carts in database from client side 
+app.post('/carts', async(req,res)=>{
+  const cartItem=req.body;
+  const result=await cartCollection.insertOne(cartItem);
+  res.send(result);
+})
 
 
 
