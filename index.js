@@ -74,6 +74,12 @@ app.post('/carts', async(req,res)=>{
 })
 
 
+// to get carts specific data -localhost:5000/carts
+app.get('/carts', async(req,res)=>{
+  const result=await cartCollection.find().toArray();
+  res.send(result);
+})
+
 
 
 
