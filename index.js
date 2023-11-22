@@ -1,6 +1,5 @@
 //for dot env
 require('dotenv').config();
-
 //basic set up start 
 const express=require('express');
 const app=express();
@@ -23,8 +22,8 @@ app.listen(port,()=>{
 
 //it's time to connect mongodb atlas 
 //this code is from  mongodb
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');//here object id came from app.delete (api)
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.6advhli.mongodb.net/?retryWrites=true&w=majority`;
 
 
@@ -74,12 +73,24 @@ app.post('/carts', async(req,res)=>{
 })
 
 
-// to get carts specific data -localhost:5000/carts
+// to get carts specific data (existing user) -localhost:5000/carts
 app.get('/carts', async(req,res)=>{
-  const result=await cartCollection.find().toArray();
+  // valid email check after tan stack query setup 
+  const email=req.query.email;
+  const query={email:email}
+  const result=await cartCollection.find(query).toArray();
   res.send(result);
 })
 
+
+
+//delete client code file name is Cart.jsx
+app.delete('/carts/:id', async(req,res)=>{
+  const id=req.params.id;
+  const query={_id: new ObjectId(id)};
+  const result=await cartCollection.deleteOne(query);
+  res.send(result);
+})
 
 
 
